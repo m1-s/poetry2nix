@@ -379,7 +379,7 @@ lib.composeManyExtensions [
                 ++ lib.optionals (lib.versionAtLeast old.version "4") [ rustc cargo pkgs.rustPlatform.cargoSetupHook final.setuptools-rust ];
           } // lib.optionalAttrs (lib.versionAtLeast old.version "4") {
             cargoDeps =
-              pkgs.rustPlatform.fetchCargoTarball
+              pkgs.rustPlatform.fetchCargoVendor
                 {
                   inherit (old) src;
                   sourceRoot = "${old.pname}-${old.version}/src/_bcrypt";
@@ -651,7 +651,7 @@ lib.composeManyExtensions [
               CRYPTOGRAPHY_DONT_BUILD_RUST = "1";
             } // lib.optionalAttrs (lib.versionAtLeast old.version "3.5" && !isWheel) rec {
               cargoDeps =
-                pkgs.rustPlatform.fetchCargoTarball {
+                pkgs.rustPlatform.fetchCargoVendor {
                   inherit (old) src;
                   sourceRoot = "${old.pname}-${old.version}/${cargoRoot}";
                   name = "${old.pname}-${old.version}";
@@ -2100,7 +2100,7 @@ lib.composeManyExtensions [
           in
           {
             inherit src;
-            cargoDeps = pkgs.rustPlatform.fetchCargoTarball {
+            cargoDeps = pkgs.rustPlatform.fetchCargoVendor {
               inherit src;
               name = "${old.pname}-${old.version}";
               sha256 = cargoHash;
@@ -2372,7 +2372,7 @@ lib.composeManyExtensions [
           };
         in
         prev.pycrdt.overridePythonAttrs (old: {
-          cargoDeps = pkgs.rustPlatform.fetchCargoTarball {
+          cargoDeps = pkgs.rustPlatform.fetchCargoVendor {
             inherit (old) src;
             name = "${old.pname}-${old.version}";
             sha256 = hashes.${old.version};
@@ -3323,7 +3323,7 @@ lib.composeManyExtensions [
             "0.17.1" = "sha256-sFutrKLa2ISxtUN7hmw2P02nl4SM6Hn4yj1kkXrNWmI=";
             "0.18.0" = "sha256-wd1teRDhjQWlKjFIahURj0iwcfkpyUvqIWXXscW7eek=";
             "0.18.1" = "sha256-caNEmU3K5COYa/UImE4BZYaFTc3Csi3WmnBSbFN3Yn8=";
-            "0.19.0" = "sha256-H9IAg4lh7cmGaML5PuyYoe026pBNhOyvb/cf+oZcv0c=";
+            "0.19.0" = "sha256-j/gwp4sjekFCcetGBbg3E6ecG42/ExNmZz7XWKgDK2Y=";
             "0.19.1" = "sha256-qIXdoCEVGCGUnTicZp4bUTJyGpFy9dwWY03lXUbxiHg=";
             "0.20.0" = "sha256-5vbR2EbrAPJ8pb78tj/+r9nOWgQDT5aO/LUQI4kAGjU=";
             "0.20.1" = "sha256-vqJCGlp5S2wECfgleCexCb9xegA8b6wo7YNBbcsbXqk=";
@@ -3334,7 +3334,7 @@ lib.composeManyExtensions [
           );
         in
         prev.rpds-py.overridePythonAttrs (old: lib.optionalAttrs (!(old.src.isWheel or false)) {
-          cargoDeps = pkgs.rustPlatform.fetchCargoTarball {
+          cargoDeps = pkgs.rustPlatform.fetchCargoVendor {
             inherit (old) src;
             name = "${old.pname}-${old.version}";
             hash = getCargoHash old.version;
@@ -3664,7 +3664,7 @@ lib.composeManyExtensions [
                       lockFile = "${src.out}/Cargo.lock";
                     } // (if hash == null then { } else hash)
                   ) else
-                pkgs.rustPlatform.fetchCargoTarball {
+                pkgs.rustPlatform.fetchCargoVendor {
                   name = "ruff-${old.version}-cargo-deps";
                   inherit src hash;
                 };
@@ -4112,7 +4112,7 @@ lib.composeManyExtensions [
                   ({
                     lockFile = "${src.out}/Cargo.lock";
                   } // (lib.optionalAttrs (lib.isAttrs hash) hash)) else
-                pkgs.rustPlatform.fetchCargoTarball {
+                pkgs.rustPlatform.fetchCargoVendor {
                   name = "watchfiles-${old.version}-cargo-deps";
                   inherit src hash;
                 };
